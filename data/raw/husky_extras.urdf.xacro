@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+<robot name="husky_extras" xmlns:xacro="http://ros.org/wiki/xacro">
+  <property name="sensor_props" value="${load_yaml('$(find husky_custom_description)/config/$(arg robot_namespace)_sensors.yaml')}" />
+
+  <!-- Arch -->
+  <link name="arch">
+    <visual>
+      <geometry>
+        <mesh filename="package://husky_custom_description/meshes/jpl04_arch_nosensor.stl" />
+      </geometry>
+      <material name="black">
+        <color rgba="0.15 0.15 0.15 1" />
+      </material>
+    </visual>
+  </link>
+  <joint name="top_plate_link_to_arch" type="fixed">
+    <parent link="base_link" />
+    <child link="arch" />
+    <origin xyz="0.114 0 0.225" rpy="0 0 0" />
+  </joint>
+
+  <!-- VLP-16 -->
+  <include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro" />
+
+  <xacro:VLP-16
+      parent="${sensor_props['velodyne']['parent']}"
+      name="${sensor_props['velodyne']['name']}"
+      topic="${sensor_props['velodyne']['topic_name']}"
+      hz="${sensor_props['velodyne']['rate']}"
+      samples="440"
+      noise="0.016"
+      gpu="true">
+    <origin xyz="${sensor_props['velodyne']['position']['x']}
+                 ${sensor_props['velodyne']['position']['y']}
+                 ${sensor_props['velodyne']['position']['z']}"
+            rpy="${sensor_props['velodyne']['orientation']['r']}
+                 ${sensor_props['velodyne']['orientation']['p']}
+                 ${sensor_props['velodyne']['orientation']['y']}" />
+  </xacro:VLP-16>
+  
+  <xacro:VLP-16
+      parent="${sensor_props['velodyne_rear']['parent']}"
+      name="${sensor_props['velodyne_rear']['name']}"
+      topic="${sensor_props['velodyne_rear']['topic_name']}"
+      hz="${sensor_props['velodyne_rear']['rate']}"
+      samples="440"
+      noise="0.016"
+      gpu="true">
+    <origin xyz="${sensor_props['velodyne_rear']['position']['x']}
+                 ${sensor_props['velodyne_rear']['position']['y']}
+                 ${sensor_props['velodyne_rear']['position']['z']}"
+            rpy="${sensor_props['velodyne_rear']['orientation']['r']}
+                 ${sensor_props['velodyne_rear']['orientation']['p']}
+                 ${sensor_props['velodyne_rear']['orientation']['y']}" />
+  </xacro:VLP-16>
+
+  <xacro:VLP-16
+      parent="${sensor_props['velodyne_front']['parent']}"
+      name="${sensor_props['velodyne_front']['name']}"
+      topic="${sensor_props['velodyne_front']['topic_name']}"
+      hz="${sensor_props['velodyne_front']['rate']}"
+      samples="440"
+      noise="0.016"
+      gpu="true">
+    <origin xyz="${sensor_props['velodyne_front']['position']['x']}
+                 ${sensor_props['velodyne_front']['position']['y']}
+                 ${sensor_props['velodyne_front']['position']['z']}"
+            rpy="${sensor_props['velodyne_front']['orientation']['r']}
+                 ${sensor_props['velodyne_front']['orientation']['p']}
+                 ${sensor_props['velodyne_front']['orientation']['y']}" />
+  </xacro:VLP-16>
+
+  <link name="velodyne_aligned_fw" />
+  <joint name="base_link_to_velodyne_aligned_fw" type="fixed">
+    <origin xyz="${sensor_props['velodyne']['position']['x']}
+                 ${sensor_props['velodyne']['position']['y']}
+                 ${sensor_props['velodyne']['position']['z']}"
+            rpy="0 0 0" />
+    <parent link="${sensor_props['velodyne']['parent']}"/>
+    <child link="velodyne_aligned_fw"/>
+  </joint>
+
+  <link name="velodyne_aligned_bw" />
+  <joint name="base_link_to_velodyne_aligned_bw" type="fixed">
+    <origin xyz="${sensor_props['velodyne']['position']['x']}
+                 ${sensor_props['velodyne']['position']['y']}
+                 ${sensor_props['velodyne']['position']['z']}"
+            rpy="0 0 ${pi}" />
+    <parent link="${sensor_props['velodyne']['parent']}"/>
+    <child link="velodyne_aligned_bw"/>
+  </joint>
+
+  <!-- Boson -->
+  <include filename="$(find costar_description)/urdf/sensors/boson640.macro.xacro" />
+  <xacro:boson640
+      namespace="$(arg robot_namespace)"
+      camera_name="${sensor_props['boson']['name']}"
+      parent="${sensor_props['boson']['parent']}">
+    <origin xyz="${sensor_props['boson']['position']['x']}
+                 ${sensor_props['boson']['position']['y']}
+                 ${sensor_props['boson']['position']['z']}"
+            rpy="${sensor_props['boson']['orientation']['r']}
+                 ${sensor_props['boson']['orientation']['p']}
+                 ${sensor_props['boson']['orientation']['y']}" />
+  </xacro:boson640>
+
+  <!-- Intel realsense -->
+  <include filename="$(find realsense_description)/urdf/realsense-RS200.macro.xacro" />
+  <xacro:realsense-rs200
+      namespace="$(arg robot_namespace)"
+      camera_name="${sensor_props['realsense']['name']}"
+      parent="${sensor_props['realsense']['parent']}"
+      hz="${sensor_props['realsense']['rate']}">
+    <origin xyz="${sensor_props['realsense']['position']['x']}
+                 ${sensor_props['realsense']['position']['y']}
+                 ${sensor_props['realsense']['position']['z']}"
+            rpy="${sensor_props['realsense']['orientation']['r']}
+                 ${sensor_props['realsense']['orientation']['p']}
+                 ${sensor_props['realsense']['orientation']['y']}" />
+  </xacro:realsense-rs200>
+
+  <!-- Intel realsense (left) -->
+  <include filename="$(find realsense_description)/urdf/realsense-RS200.macro.xacro" />
+  <xacro:realsense-rs200
+      namespace="$(arg robot_namespace)"
+      camera_name="${sensor_props['realsense_left']['name']}"
+      parent="${sensor_props['realsense_left']['parent']}"
+      hz="${sensor_props['realsense_left']['rate']}">
+    <origin xyz="${sensor_props['realsense_left']['position']['x']}
+                 ${sensor_props['realsense_left']['position']['y']}
+                 ${sensor_props['realsense_left']['position']['z']}"
+            rpy="${sensor_props['realsense_left']['orientation']['r']}
+                 ${sensor_props['realsense_left']['orientation']['p']}
+                 ${sensor_props['realsense_left']['orientation']['y']}" />
+  </xacro:realsense-rs200>
+
+  <!-- Intel realsense (right) -->
+  <include filename="$(find realsense_description)/urdf/realsense-RS200.macro.xacro" />
+  <xacro:realsense-rs200
+      namespace="$(arg robot_namespace)"
+      camera_name="${sensor_props['realsense_right']['name']}"
+      parent="${sensor_props['realsense_right']['parent']}"
+      hz="${sensor_props['realsense_right']['rate']}">
+    <origin xyz="${sensor_props['realsense_right']['position']['x']}
+                 ${sensor_props['realsense_right']['position']['y']}
+                 ${sensor_props['realsense_right']['position']['z']}"
+            rpy="${sensor_props['realsense_right']['orientation']['r']}
+                 ${sensor_props['realsense_right']['orientation']['p']}
+                 ${sensor_props['realsense_right']['orientation']['y']}" />
+  </xacro:realsense-rs200>
+
+  <!-- Intel realsense T265 (front) -->
+  <include filename="$(find realsense_description)/urdf/realsense-RST265.macro.xacro" />
+  <xacro:realsense-rst265
+      namespace="$(arg robot_namespace)"
+      camera_name="${sensor_props['realsense_t265_front']['name']}"
+      parent="${sensor_props['realsense_t265_front']['parent']}"
+      hz="${sensor_props['realsense_t265_front']['rate']}">
+    <origin xyz="${sensor_props['realsense_t265_front']['position']['x']}
+                 ${sensor_props['realsense_t265_front']['position']['y']}
+                 ${sensor_props['realsense_t265_front']['position']['z']}"
+            rpy="${sensor_props['realsense_t265_front']['orientation']['r']}
+                 ${sensor_props['realsense_t265_front']['orientation']['p']}
+                 ${sensor_props['realsense_t265_front']['orientation']['y']}" />
+  </xacro:realsense-rst265>
+
+  <!-- Intel realsense T265 (right) -->
+  <include filename="$(find realsense_description)/urdf/realsense-RST265.macro.xacro" />
+  <xacro:realsense-rst265
+      namespace="$(arg robot_namespace)"
+      camera_name="${sensor_props['realsense_t265_right']['name']}"
+      parent="${sensor_props['realsense_t265_right']['parent']}"
+      hz="${sensor_props['realsense_t265_right']['rate']}">
+    <origin xyz="${sensor_props['realsense_t265_right']['position']['x']}
+                 ${sensor_props['realsense_t265_right']['position']['y']}
+                 ${sensor_props['realsense_t265_right']['position']['z']}"
+            rpy="${sensor_props['realsense_t265_right']['orientation']['r']}
+                 ${sensor_props['realsense_t265_right']['orientation']['p']}
+                 ${sensor_props['realsense_t265_right']['orientation']['y']}" />
+  </xacro:realsense-rst265>
+
+  <!-- Intel realsense T265 (left) -->
+  <include filename="$(find realsense_description)/urdf/realsense-RST265.macro.xacro" />
+  <xacro:realsense-rst265
+      namespace="$(arg robot_namespace)"
+      camera_name="${sensor_props['realsense_t265_left']['name']}"
+      parent="${sensor_props['realsense_t265_left']['parent']}"
+      hz="${sensor_props['realsense_t265_left']['rate']}">
+    <origin xyz="${sensor_props['realsense_t265_left']['position']['x']}
+                 ${sensor_props['realsense_t265_left']['position']['y']}
+                 ${sensor_props['realsense_t265_left']['position']['z']}"
+            rpy="${sensor_props['realsense_t265_left']['orientation']['r']}
+                 ${sensor_props['realsense_t265_left']['orientation']['p']}
+                 ${sensor_props['realsense_t265_left']['orientation']['y']}" />
+  </xacro:realsense-rst265>
+
+  <!-- Ground truth pose -->
+  <gazebo>
+    <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+      <robotNamespace>$(arg robot_namespace)</robotNamespace>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>50.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>ground_truth/odometry</topicName>
+      <gaussianNoise>0.01</gaussianNoise>
+      <frameName>/world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+  </gazebo>
+
+  <!-- Robot-mounted light -->
+  <include filename="$(find costar_description)/urdf/flashlight.urdf.xacro" />
+
+  <xacro:flashlight
+      namespace="$(arg robot_namespace)"
+      flashlight_prefix="flashlight"
+      parent_link="arch"
+      xyz="0.43 0.04 0.28"
+      rpy="0 0 3.14"
+      default_color="1.0 1.0 1.0">
+    <plugin_params />
+  </xacro:flashlight>
+  
+  <xacro:flashlight
+      namespace="$(arg robot_namespace)"
+      flashlight_prefix="flashlight_left"
+      parent_link="arch"
+      xyz="0.05 0.25 0.28"
+      rpy="0 0 4.71"
+      default_color="1.0 1.0 1.0">
+    <plugin_params />
+  </xacro:flashlight>
+
+  <xacro:flashlight
+      namespace="$(arg robot_namespace)"
+      flashlight_prefix="flashright_right"
+      parent_link="arch"
+      xyz="0.05 -0.25 0.28"
+      rpy="0 0 1.57"
+      default_color="1.0 1.0 1.0">
+    <plugin_params />
+  </xacro:flashlight>
+
+  <!-- Overhead light -->
+  <include filename="$(find costar_description)/urdf/led.urdf.xacro" />
+  <xacro:led
+      namespace="$(arg robot_namespace)"
+      led_prefix="overhead_light"
+      parent_link="arch"
+      xyz="0 0 2.0"
+      rpy="0 0 0"
+      default_color="1.0 1.0 1.0">
+    <plugin_params />
+  </xacro:led>
+
+  <!-- VN100 -->
+  <xacro:include filename="$(find costar_description)/urdf/sensors/imu_vn100.urdf.xacro"/>
+  <xacro:vn100
+      robot_namespace="$(arg robot_namespace)"
+      name="${sensor_props['vn100']['name']}"
+      topic_name="${sensor_props['vn100']['topic_name']}"
+      hz="${sensor_props['vn100']['rate']}"
+      parent="${sensor_props['vn100']['parent']}">
+    <origin xyz="${sensor_props['vn100']['position']['x']}
+                 ${sensor_props['vn100']['position']['y']}
+                 ${sensor_props['vn100']['position']['z']}"
+            rpy="${sensor_props['vn100']['orientation']['r']}
+                 ${sensor_props['vn100']['orientation']['p']}
+                 ${sensor_props['vn100']['orientation']['y']}" />
+  </xacro:vn100>
+
+</robot>
