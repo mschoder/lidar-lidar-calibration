@@ -1,8 +1,8 @@
 # Lidar-Lidar Calibration
-#### Tools for testing extrinsic calibration between two rigidly mounted Lidar sensors on a ground vehicle
+Tools for testing extrinsic calibration between two rigidly mounted Lidar sensors on a ground vehicle for [DARPA Sub-T Challenge](https://www.subtchallenge.com/)
 
 # Overview
-This repository contains the set of scripts and tools to run and evaluate several different methods used to determine the extrinsic calibration between multiple rigidly mounted LiDAR sensors, as described in the included [paper](link). 
+This repository contains the set of scripts and tools to run and evaluate several different methods used to determine the extrinsic calibration between multiple rigidly mounted LiDAR sensors, as described in the included [paper](https://github.com/mschoder/lidar-lidar-calibration/blob/main/lidar-lidar-calibration-report.pdf). 
 
 # Dependencies 
 In addition to the specific external libraries linked in the `Methods` section below, some dependencies required to run the full suite of methods are as follows, tested on Ubuntu 18.04:

@@ -1,12 +1,18 @@
 
 close all; clear; clc;
 
+addpath('./tsai_lenz', './data/he_data', './data/la_data', './data/tl_data', './results');
 load_odom_data();
-addpath('./data/he_data', './tsai_lenz', './data/la_data');
 posesA = mainMF; posesB = frontMF;
 M = size(posesA,3);
 
-%% Set HE Cal Solution to evaluate - load from json file
+%% Set HE Cal Solution(s) to evaluate - load from json file
+% MF = main-front
+% MR = main-rear
+% TL = Tsai-Lenz
+% HE = ETHZ Hand-Eye Calibration Library
+% LA = ETHZ Lidar-Align Library
+% NDT = Normal Distrubtu
 
 fsol = 'calibration_MF_TL.json';  % full version with 3M pairs
 T_TL = load_Tcal(fsol);
