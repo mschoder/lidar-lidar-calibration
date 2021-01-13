@@ -10,7 +10,7 @@ In addition to the specific external libraries linked in the `Methods` section b
 - MATLAB (tested with version 2020a) for evaluation and visualization
 - ROS (melodic) with standard python dependencies
 - Point Cloud Library (PCL) for NDT method
-- OctoMap for point cloud visualization
+- [OctoMap](https://octomap.github.io/) for point cloud visualization
 
 ```
 sudo apt-get install ros-melodic-octomap
@@ -23,7 +23,7 @@ sudo apt-get install pcl-tools
 * Tsai-Lenz - an implementation of the foundational approach described in the 1989 paper [A new technique for fully autonomous and efficient 3D robotics hand/eye calibration](https://ieeexplore.ieee.org/document/34770), based on [Zoran Lazarevic's Matlab code](http://lazax.com/www.cs.columbia.edu/~laza/html/Stewart/matlab/handEye.m)
 * [ETHZ Hand Eye Calibration Library](https://github.com/ethz-asl/hand_eye_calibration)
 * [Lidar-Align Library](https://github.com/ethz-asl/lidar_align)
-* [Normal Distributions Transform](linhttps://github.com/PointCloudLibrary/pcl/blob/master/doc/tutorials/content/normal_distributions_transform.rstk) - Implementation from PCL
+* [Normal Distributions Transform](https://github.com/PointCloudLibrary/pcl/blob/master/doc/tutorials/content/normal_distributions_transform.rstk) - [Implementation](https://pointclouds.org/documentation/tutorials/normal_distributions_transform.html) from PCL
 
 # Detailed Instructions
 ### Data Preprocessing
@@ -96,11 +96,21 @@ cd lidar_align
 
 
 ### Normal Distributions Transform
-[TODO - Phil]
-
-
-
-
+- Ensure the Point Cloud Library (PCL) is installed
+- Identify the desired timestep from which to compute a transform (using a timestep with zero translational and rotational velocity is preferred to minimize error due to movement between frames)
+- Use the following command to convert the desired topic containing LIDAR data from each sensor's bag to pointcloud data files. This will generate a `.pcd` file for each timestep in the bag file
+```
+rosrun pcl_ros bag_to_pcd <input_file.bag> <topic> <output_directory>
+```
+- Determine a "target cloud" and an "input cloud". The output of the normal distributions tranform will be the tranform from the input cloud to the target cloud.
+- Within the `normal_distributions_tranform.cpp` file, edit the `target_cloud` and `input_cloud` paths to point to the `.pcd` files at the correct timesteps
+- Edit the "initial guess" within `normal_distributions_tranform.cpp` to reflect the correct iniial guess
+- Various other parameters can be tuned here if a solution does not converge
+- Run the following command to generate the desired transform between the target and input pointclouds:
+```
+rosrun normal_distributions_transform normal_distributions_transform 
+```
+- A new window will pop-up after the transform has been generated allowing the user to visualize the targeting and input clouds (you may need to zoom out to properly view the clouds)
 
 ## Evaluation Criteria
 - Main evaluation script is `eval_alignment.m` which computes pose errors for all calibration result inputs, and provides a set of plots showing 2D and 3D trajectory alignment of the two sensors and relative error. The script relies on one of two functions:
@@ -112,7 +122,18 @@ Other utilities included:
 - `husky_conversions.m` - conversions from RPY to quaternion representation for initial hand-calibration estimate provided in YAML file. Also provides example conversions math used for Lidar-Align and NDT inputs/results
 - `load_Tcal.m` - Utility to load a caibration estimate from a standard format JSON file (example provided in `/results` directory) for comparison of baseline tranform and different methods' results 
 
-
-
 ## Visualization Tools
-- [TODO] Description and instructions for running Octomap visualization
+- Ensure Octomap is [properly installed](https://github.com/OctoMap/octomap/wiki/Compilation-and-Installation-of-OctoMap)
+- Review `tf_transform.cpp` to ensure that the topics are properly mapped to the correct topics for the desired rosbags
+
+### Visualizing a Single Sensor
+- Use `visuals.launch` to visualize a single sensor
+- Change the `sensor` argument to reflect the desired sensor (front, main, rear, etc.)
+- Adjust RVIZ settings as necessary to view desired information
+
+### Visualizing Multiple Sensors Simultaneously
+- Use `compare_bags.launch` to view to lidar point cloud maps simultaneously
+- This is useful to qualitatively evaluating the quality of a transform between these two sensors
+- Change the `sensor1` and `sensor2` arguments to reflect the desired sensors for comparison
+- Change the `sensor_cal` transform to the desired extrinsic sensor calibration
+- The `max_range` and color can also be adjusted here to change the resultant octomap.
