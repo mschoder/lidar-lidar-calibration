@@ -1,6 +1,0 @@
-visuals
-/home/phil/final_proj/pcl_ws/devel/.private/visuals/cmake.lock /home/phil/final_proj/pcl_ws/devel/./cmake.lock
-/home/phil/final_proj/pcl_ws/devel/.private/visuals/share/visuals/cmake/visualsConfig.cmake /home/phil/final_proj/pcl_ws/devel/share/visuals/cmake/visualsConfig.cmake
-/home/phil/final_proj/pcl_ws/devel/.private/visuals/share/visuals/cmake/visualsConfig-version.cmake /home/phil/final_proj/pcl_ws/devel/share/visuals/cmake/visualsConfig-version.cmake
-/home/phil/final_proj/pcl_ws/devel/.private/visuals/lib/pkgconfig/visuals.pc /home/phil/final_proj/pcl_ws/devel/lib/pkgconfig/visuals.pc
-/home/phil/final_proj/pcl_ws/devel/.private/visuals/lib/visuals/tf_transform /home/phil/final_proj/pcl_ws/devel/lib/visuals/tf_transform
