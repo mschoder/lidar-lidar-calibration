@@ -134,6 +134,7 @@ Other utilities included:
 ### Visualizing Multiple Sensors Simultaneously
 - Use `compare_bags.launch` to view to lidar point cloud maps simultaneously
 - This is useful to qualitatively evaluating the quality of a transform between these two sensors
+- rosbags may need to be merged such that there are two PointCloud2 topics (one for each sensor) and an odom topic. Use `bagmerge.py` (in the "scripts" directory) to merge the desired topics from different bags into a single bag.
 - Change the `sensor1` and `sensor2` arguments to reflect the desired sensors for comparison
 - Change the `sensor_cal` transform to the desired extrinsic sensor calibration
 - The `max_range` and color can also be adjusted here to change the resultant octomap.
