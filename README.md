@@ -23,7 +23,7 @@ sudo apt-get install pcl-tools
 * Tsai-Lenz - an implementation of the foundational approach described in the 1989 paper [A new technique for fully autonomous and efficient 3D robotics hand/eye calibration](https://ieeexplore.ieee.org/document/34770), based on [Zoran Lazarevic's Matlab code](http://lazax.com/www.cs.columbia.edu/~laza/html/Stewart/matlab/handEye.m)
 * [ETHZ Hand Eye Calibration Library](https://github.com/ethz-asl/hand_eye_calibration)
 * [Lidar-Align Library](https://github.com/ethz-asl/lidar_align)
-* [Normal Distributions Transform](https://github.com/PointCloudLibrary/pcl/blob/master/doc/tutorials/content/normal_distributions_transform.rstk) - [Implementation](https://pointclouds.org/documentation/tutorials/normal_distributions_transform.html) from PCL
+* [Normal Distributions Transform](https://pointclouds.org/documentation/tutorials/normal_distributions_transform.html) - Implementation from PCL
 
 # Detailed Instructions
 ### Data Preprocessing
