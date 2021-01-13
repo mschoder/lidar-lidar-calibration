@@ -97,6 +97,7 @@ cd lidar_align
 
 ### Normal Distributions Transform
 - Ensure the Point Cloud Library (PCL) is installed
+- Reference the `normal_distributions_transform` directory
 - Identify the desired timestep from which to compute a transform (using a timestep with zero translational and rotational velocity is preferred to minimize error due to movement between frames)
 - Use the following command to convert the desired topic containing LIDAR data from each sensor's bag to pointcloud data files. This will generate a `.pcd` file for each timestep in the bag file
 ```
@@ -124,6 +125,7 @@ Other utilities included:
 
 ## Visualization Tools
 - Ensure Octomap is [properly installed](https://github.com/OctoMap/octomap/wiki/Compilation-and-Installation-of-OctoMap)
+- Relevant Octomap visualization files are in the `visuals` directory
 - Review `tf_transform.cpp` to ensure that the topics are properly mapped to the correct topics for the desired rosbags
 
 ### Visualizing a Single Sensor
